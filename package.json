@@ -1,6 +1,7 @@
 {
   "name": "highlight-marker",
   "version": "1.0.0",
+  "main": "src/index",
   "scripts": {
     "test": "gulp test"
   },

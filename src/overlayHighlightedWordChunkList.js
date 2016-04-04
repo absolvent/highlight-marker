@@ -1,33 +1,33 @@
 /**
- * @license Copyright (c) 2015-present, Absolvent.pl
- * For licensing, see LICENSE
+ * Copyright (c) 2016-present, Absolvent
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-var getCombinedWordLength = require("./getCombinedWordLength"),
-    reduce = require("lodash/reduce");
+const getCombinedWordLength = require('./getCombinedWordLength');
+const reduce = require('lodash/reduce');
 
 function overlayHighlightedWordChunkList(highlightedWordChunkList, foundText) {
-    return reduce(highlightedWordChunkList, function (acc, highlightedWordChunk) {
-        var accOffsetLength = getCombinedWordLength(acc),
-            foundTextSlice,
-            highlightedWordChunkLength;
+  return reduce(highlightedWordChunkList, function (acc, highlightedWordChunk) {
+    const offset = getCombinedWordLength(acc);
+    const highlightedWordChunkLength = getCombinedWordLength([
+      highlightedWordChunk,
+    ]);
+    const foundTextSlice = foundText.slice(offset, offset + highlightedWordChunkLength);
 
-        highlightedWordChunkLength = getCombinedWordLength([
-            highlightedWordChunk
-        ]);
-        foundTextSlice = foundText.slice(accOffsetLength, accOffsetLength + highlightedWordChunkLength);
+    if (highlightedWordChunk.inputValueWord) {
+      return acc.concat({
+        inputValueWord: foundTextSlice,
+        isHighlighted: highlightedWordChunk.isHighlighted,
+      });
+    }
 
-        if (highlightedWordChunk.inputValueWord) {
-            return acc.concat({
-                "inputValueWord": foundTextSlice,
-                "isHighlighted": highlightedWordChunk.isHighlighted
-            });
-        }
-
-        return acc.concat(foundTextSlice);
-    }, []);
+    return acc.concat(foundTextSlice);
+  }, []);
 }
 
 module.exports = overlayHighlightedWordChunkList;

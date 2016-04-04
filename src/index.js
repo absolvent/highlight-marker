@@ -1,73 +1,79 @@
 /**
- * @license Copyright (c) 2015-present, Absolvent.pl
- * For licensing, see LICENSE
+ * Copyright (c) 2016-present, Absolvent
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-var escapeRegExp = require("lodash/escapeRegExp"),
-    flatten = require("lodash/flatten"),
-    map = require("lodash/map"),
-    overlayHighlightedWordChunkList = require("./overlayHighlightedWordChunkList"),
-    reduce = require("lodash/reduce"),
-    words = require("lodash/words");
+const escapeRegExp = require('lodash/escapeRegExp');
+const flatten = require('lodash/flatten');
+const map = require('lodash/map');
+const overlayHighlightedWordChunkList = require('./overlayHighlightedWordChunkList');
+const reduce = require('lodash/reduce');
+const words = require('lodash/words');
 
 function createSplitRegExpFromWord(inputValueWord) {
-    return new RegExp(escapeRegExp(inputValueWord), "i");
-}
-
-function highlightFoundText(inputValue, foundText, leftDelimiter, rightDelimiter) {
-    var highlightedWordChunkList;
-
-    highlightedWordChunkList = reduce(words(inputValue).sort(sortWordsDescendingByLength), function (foundTextWordList, inputValueWord) {
-        return flatten(map(foundTextWordList, function (foundTextWord) {
-            if (foundTextWord.isHighlighted) {
-                return foundTextWord;
-            }
-
-            return reduce(foundTextWord.split(createSplitRegExpFromWord(inputValueWord)), function (combinedWord, wordChunk, index, inputList) {
-                combinedWord.push(wordChunk);
-                if (!isLastIndex(index, inputList)) {
-                    combinedWord.push({
-                        "inputValueWord": inputValueWord,
-                        "isHighlighted": true
-                    });
-                }
-
-                return combinedWord;
-            }, []);
-        }));
-    }, [
-        foundText
-    ]);
-
-    return reduce(overlayHighlightedWordChunkList(highlightedWordChunkList, foundText), function (acc, foundTextChunk) {
-        return {
-            "highlightText": foundText,
-            "highlightedText": acc.highlightedText + (
-                foundTextChunk.isHighlighted ? (
-                    leftDelimiter + foundTextChunk.inputValueWord + rightDelimiter
-                ) : (
-                    foundTextChunk
-                )
-            ),
-            "inputText": inputValue,
-            "isHighlighted": acc.isHighlighted || foundTextChunk.isHighlighted
-        };
-    }, {
-        "highlightText": foundText,
-        "highlightedText": "",
-        "inputText": inputValue,
-        "isHighlighted": false
-    });
+  return new RegExp(escapeRegExp(inputValueWord), 'i');
 }
 
 function isLastIndex(index, inputList) {
-    return index >= inputList.length - 1;
+  return index >= inputList.length - 1;
 }
 
 function sortWordsDescendingByLength(left, right) {
-    return right.length - left.length;
+  return right.length - left.length;
+}
+
+function highlightFoundText(inputValue, foundText, leftDelimiter, rightDelimiter) {
+  const sortedWords = words(inputValue).sort(sortWordsDescendingByLength);
+  const highlightedWordChunkList = reduce(sortedWords, (foundTextWordList, inputValueWord) => (
+    flatten(map(foundTextWordList, function (foundTextWord) {
+      if (foundTextWord.isHighlighted) {
+        return foundTextWord;
+      }
+
+      const splittedWord = foundTextWord.split(createSplitRegExpFromWord(inputValueWord));
+
+      return reduce(splittedWord, function (combinedWord, wordChunk, index, inputList) {
+        combinedWord.push(wordChunk);
+        if (!isLastIndex(index, inputList)) {
+          combinedWord.push({
+            inputValueWord,
+            isHighlighted: true,
+          });
+        }
+
+        return combinedWord;
+      }, []);
+    }))
+  ), [
+    foundText,
+  ]);
+
+  function doReduce(acc, foundTextChunk) {
+    return {
+      highlightText: foundText,
+      highlightedText: acc.highlightedText + (
+        foundTextChunk.isHighlighted ? (
+          leftDelimiter + foundTextChunk.inputValueWord + rightDelimiter
+        ) : (
+          foundTextChunk
+        )
+      ),
+      inputText: inputValue,
+      isHighlighted: acc.isHighlighted || foundTextChunk.isHighlighted,
+    };
+  }
+
+  return reduce(overlayHighlightedWordChunkList(highlightedWordChunkList, foundText), doReduce, {
+    highlightText: foundText,
+    highlightedText: '',
+    inputText: inputValue,
+    isHighlighted: false,
+  });
 }
 
 module.exports = highlightFoundText;

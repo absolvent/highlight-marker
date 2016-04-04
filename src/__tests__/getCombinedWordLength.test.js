@@ -1,29 +1,31 @@
 /**
- * @license Copyright (c) 2015-present, Absolvent.pl
- * For licensing, see LICENSE
+ * Copyright (c) 2016-present, Absolvent
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
 /* global describe: false, it: false */
 
-var assert = require("chai").assert,
-    path = require("path"),
-    getCombinedWordLength = require(path.resolve(__dirname, "../../highlightFoundText/getCombinedWordLength"));
+const assert = require('chai').assert;
+const getCombinedWordLength = require('../getCombinedWordLength');
 
-describe("absolvent/highlightFoundText/getCombinedWordLength", function () {
-    it("counts output character list length", function () {
-        assert.strictEqual(getCombinedWordLength([
-            "",
-            {
-                "inputValueWord": "f",
-                "isHighlighted": true
-            },
-            " U",
-            {
-                "inputValueWord": "f",
-                "isHighlighted": false
-            }
-        ]), 4);
-    });
+describe('absolvent/highlightFoundText/getCombinedWordLength', function () {
+  it('counts output character list length', function () {
+    assert.strictEqual(getCombinedWordLength([
+      '',
+      {
+        inputValueWord: 'f',
+        isHighlighted: true,
+      },
+      ' U',
+      {
+        inputValueWord: 'f',
+        isHighlighted: false,
+      },
+    ]), 4);
+  });
 });
