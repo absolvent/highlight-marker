@@ -1,0 +1,16 @@
+{
+  "name": "highlight-marker",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "lodash": "^4.7.0"
+  },
+  "devDependencies": {
+    "gore-gulp": "^0.11.8",
+    "gulp": "^3.9.1",
+    "space-preconfigured-eslint": "^1.4.11",
+    "space-preconfigured-mocha": "^1.1.2"
+  }
+}
