@@ -10,8 +10,8 @@
 
 /* global describe: false, it: false */
 
-const assert = require('chai').assert;
-const getCombinedWordLength = require('../getCombinedWordLength');
+var assert = require('chai').assert;
+var getCombinedWordLength = require('../getCombinedWordLength');
 
 describe('absolvent/highlightFoundText/getCombinedWordLength', function () {
   it('counts output character list length', function () {

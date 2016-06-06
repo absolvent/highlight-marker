@@ -10,8 +10,8 @@
 
 /* global describe: false, it: false */
 
-const assert = require('chai').assert;
-const overlayHighlightedWordChunkList = require('../overlayHighlightedWordChunkList');
+var assert = require('chai').assert;
+var overlayHighlightedWordChunkList = require('../overlayHighlightedWordChunkList');
 
 describe('absolvent/highlightFoundText/overlayHighlightedWordChunkList', function () {
   it('masks highlighted word chunk list', function () {

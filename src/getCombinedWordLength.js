@@ -8,7 +8,9 @@
 
 'use strict';
 
-const reduce = require('lodash/reduce');
+/* eslint no-var: 0 */
+
+var reduce = require('lodash/reduce');
 
 function getCombinedWordLength(combinedWord) {
   return reduce(combinedWord, function (acc, wordChunk) {

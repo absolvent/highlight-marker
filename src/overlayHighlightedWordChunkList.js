@@ -8,16 +8,18 @@
 
 'use strict';
 
-const getCombinedWordLength = require('./getCombinedWordLength');
-const reduce = require('lodash/reduce');
+/* eslint no-var: 0 */
+
+var getCombinedWordLength = require('./getCombinedWordLength');
+var reduce = require('lodash/reduce');
 
 function overlayHighlightedWordChunkList(highlightedWordChunkList, foundText) {
   return reduce(highlightedWordChunkList, function (acc, highlightedWordChunk) {
-    const offset = getCombinedWordLength(acc);
-    const highlightedWordChunkLength = getCombinedWordLength([
+    var offset = getCombinedWordLength(acc);
+    var highlightedWordChunkLength = getCombinedWordLength([
       highlightedWordChunk,
     ]);
-    const foundTextSlice = foundText.slice(offset, offset + highlightedWordChunkLength);
+    var foundTextSlice = foundText.slice(offset, offset + highlightedWordChunkLength);
 
     if (highlightedWordChunk.inputValueWord) {
       return acc.concat({
