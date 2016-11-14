@@ -8,14 +8,12 @@
 
 'use strict';
 
-/* eslint no-var: 0 */
-
-var escapeRegExp = require('lodash/escapeRegExp');
-var flatten = require('lodash/flatten');
-var map = require('lodash/map');
-var overlayHighlightedWordChunkList = require('./overlayHighlightedWordChunkList');
-var reduce = require('lodash/reduce');
-var words = require('lodash/words');
+const escapeRegExp = require('lodash/escapeRegExp');
+const flatten = require('lodash/flatten');
+const map = require('lodash/map');
+const overlayHighlightedWordChunkList = require('./overlayHighlightedWordChunkList');
+const reduce = require('lodash/reduce');
+const words = require('lodash/words');
 
 function createSplitRegExpFromWord(inputValueWord) {
   return new RegExp(escapeRegExp(inputValueWord), 'i');
@@ -30,28 +28,28 @@ function sortWordsDescendingByLength(left, right) {
 }
 
 function highlightFoundText(inputValue, foundText, leftDelimiter, rightDelimiter) {
-  var sortedWords = words(inputValue).sort(sortWordsDescendingByLength);
-  var highlightedWordChunkList = reduce(sortedWords, function (foundTextWordList, inputValueWord) {
-    return flatten(map(foundTextWordList, function (foundTextWord) {
+  const sortedWords = words(inputValue).sort(sortWordsDescendingByLength);
+  const highlightedWordChunkList = reduce(sortedWords, (foundTextWordList, inputValueWord) => (
+    flatten(map(foundTextWordList, foundTextWord => {
       if (foundTextWord.isHighlighted) {
         return foundTextWord;
       }
 
-      var splittedWord = foundTextWord.split(createSplitRegExpFromWord(inputValueWord));
+      const splittedWord = foundTextWord.split(createSplitRegExpFromWord(inputValueWord));
 
-      return reduce(splittedWord, function (combinedWord, wordChunk, index, inputList) {
+      return reduce(splittedWord, (combinedWord, wordChunk, index, inputList) => {
         combinedWord.push(wordChunk);
         if (!isLastIndex(index, inputList)) {
           combinedWord.push({
-            inputValueWord: inputValueWord,
+            inputValueWord,
             isHighlighted: true,
           });
         }
 
         return combinedWord;
       }, []);
-    }));
-  }, [
+    }))
+  ), [
     foundText,
   ]);
 

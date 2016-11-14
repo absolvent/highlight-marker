@@ -8,19 +8,7 @@
 
 'use strict';
 
-const eslint = require('space-preconfigured-eslint');
+const gg = require('gore-gulp');
 const gulp = require('gulp');
-const mocha = require('space-preconfigured-mocha');
 
-gulp.task('lint', function () {
-  return eslint([
-    __filename,
-    './src/**/*.js',
-  ]);
-});
-
-gulp.task('test', ['lint'], function () {
-  return mocha([
-    './src/__tests__/**/*.test.js',
-  ]);
-});
+gg(__dirname).setup(gulp);

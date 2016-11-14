@@ -10,11 +10,11 @@
 
 /* global describe: false, it: false */
 
-var assert = require('chai').assert;
-var overlayHighlightedWordChunkList = require('../overlayHighlightedWordChunkList');
+const assert = require('assert');
+const overlayHighlightedWordChunkList = require('../overlayHighlightedWordChunkList');
 
-describe('absolvent/highlightFoundText/overlayHighlightedWordChunkList', function () {
-  it('masks highlighted word chunk list', function () {
+describe('absolvent/highlightFoundText/overlayHighlightedWordChunkList', () => {
+  it('masks highlighted word chunk list', () => {
     assert.deepEqual(overlayHighlightedWordChunkList([
       '',
       {

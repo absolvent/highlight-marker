@@ -10,11 +10,11 @@
 
 /* global describe: false, it: false */
 
-var assert = require('chai').assert;
-var getCombinedWordLength = require('../getCombinedWordLength');
+const assert = require('assert');
+const getCombinedWordLength = require('../getCombinedWordLength');
 
-describe('absolvent/highlightFoundText/getCombinedWordLength', function () {
-  it('counts output character list length', function () {
+describe('absolvent/highlightFoundText/getCombinedWordLength', () => {
+  it('counts output character list length', () => {
     assert.strictEqual(getCombinedWordLength([
       '',
       {

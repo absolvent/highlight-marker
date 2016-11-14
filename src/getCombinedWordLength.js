@@ -8,12 +8,10 @@
 
 'use strict';
 
-/* eslint no-var: 0 */
-
-var reduce = require('lodash/reduce');
+const reduce = require('lodash/reduce');
 
 function getCombinedWordLength(combinedWord) {
-  return reduce(combinedWord, function (acc, wordChunk) {
+  return reduce(combinedWord, (acc, wordChunk) => {
     if (wordChunk.inputValueWord) {
       return acc + wordChunk.inputValueWord.length;
     }
