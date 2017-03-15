@@ -41,4 +41,13 @@ describe('absolvent/highlightFoundText/index', () => {
     assert.ok(highlighted.isHighlighted);
     assert.strictEqual(highlighted.highlightedText, '[F] U[f]O ObO[oR]');
   });
+
+  it('highlights text with diacritics characters', () => {
+    // @TODO bug in Loadash.words (lóDż => ['ló', 'Dż'] insteadof ['lóDż'])
+    // const highlighted = highlightFoundText('lóDż', 'to jest Miasto łÓdź w Polsce', '[', ']');
+    const highlighted = highlightFoundText('lódż jest', 'to jest Miasto łÓDź w Polsce', '[', ']');
+
+    assert.ok(highlighted.isHighlighted);
+    assert.strictEqual(highlighted.highlightedText, 'to [jest] Miasto [łÓDź] w Polsce');
+  });
 });

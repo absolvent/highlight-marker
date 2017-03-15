@@ -14,9 +14,28 @@ const map = require('lodash/map');
 const overlayHighlightedWordChunkList = require('./overlayHighlightedWordChunkList');
 const reduce = require('lodash/reduce');
 const words = require('lodash/words');
+const replacementList = require('diacritics').replacementList;
 
 function createSplitRegExpFromWord(inputValueWord) {
-  return new RegExp(escapeRegExp(inputValueWord), 'i');
+  const dict = {};
+
+  // exchange every occurrence of o, ó or a, ą ... with [oó] and [aą] ...
+  // eg. "aóż" => "[aą...][oó...][zż...]"
+  let aliasSpecialCharsRegexp = '';
+  for (const obj of replacementList) {
+    if (obj.base.length === 1 && obj.base.toLowerCase() === obj.base) {
+      const pattern = escapeRegExp(obj.base + obj.chars).split('').join('|');
+      for (const char of pattern) {
+        aliasSpecialCharsRegexp += char;
+        dict[char] = pattern;
+      }
+    }
+  }
+
+  return new RegExp(inputValueWord.toLowerCase().replace(
+    new RegExp(`[${aliasSpecialCharsRegexp}]`, 'g'),
+    v => `[${dict[v]}]`
+  ), 'i');
 }
 
 function isLastIndex(index, inputList) {
